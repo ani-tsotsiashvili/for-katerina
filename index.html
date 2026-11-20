@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Χρόνια Πολλά Κατερίνα | Art & Chemistry</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0e171e;
+            --bg-card: #14222c;
+            --gold: #d4af37;
+            --gold-light: #f3e5ab;
+            --cream: #f4f1ea;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--cream);
+            font-family: 'Cormorant Garamond', serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(42, 92, 90, 0.25) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.12) 0%, transparent 50%);
+        }
+
+        .gallery-frame {
+            position: relative;
+            width: 90%;
+            max-width: 720px;
+            background: var(--bg-card);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            padding: 50px 40px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), inset 0 0 40px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        .gallery-frame::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            pointer-events: none;
+        }
+
+        .date-tag {
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            letter-spacing: 4px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.8rem;
+            font-weight: 600;
+            color: var(--gold-light);
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 10px rgba(212, 175, 55, 0.2);
+        }
+
+        .subtitle-en {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: #a8b5b2;
+            letter-spacing: 1.5px;
+            margin-bottom: 30px;
+        }
+
+        /* დამალული გადამრთველი JS-ის გარეშე სამუშაოდ */
+        #cat-toggle {
+            display: none;
+        }
+
+        .art-canvas {
+            display: block;
+            width: 280px;
+            height: 280px;
+            margin: 0 auto 12px auto;
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        .gold-stroke {
+            stroke: var(--gold);
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .thin-line {
+            stroke: rgba(212, 175, 55, 0.35);
+            fill: none;
+        }
+
+        .vitruvian-ring {
+            transform-origin: 150px 150px;
+            animation: rotateSlow 45s linear infinite;
+        }
+
+        @keyframes rotateSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .bubble {
+            fill: var(--gold);
+            opacity: 0.7;
+            animation: floatUp 4s ease-in-out infinite;
+        }
+        .bubble:nth-child(2) { animation-delay: 1.3s; }
+        .bubble:nth-child(3) { animation-delay: 2.6s; }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.8); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-35px) scale(1.1); opacity: 0; }
+        }
+
+        /* კატის გაღვიძება დაჭერისას */
+        .cat-eyes {
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .cat-body {
+            transition: stroke 0.4s ease, filter 0.4s ease;
+        }
+
+        .meow-bubble {
+            position: absolute;
+            top: 120px;
+            right: 22px;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.35rem;
+            color: var(--gold-light);
+            opacity: 0;
+            transform: translateY(8px);
+            transition: all 0.5s ease;
+            pointer-events: none;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+        }
+
+        /* როცა კოლბას დააჭერს */
+        #cat-toggle:checked ~ .art-canvas .cat-eyes {
+            opacity: 1;
+        }
+
+        #cat-toggle:checked ~ .art-canvas .cat-body {
+            stroke: var(--gold-light);
+            filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.7));
+        }
+
+        #cat-toggle:checked ~ .art-canvas .meow-bubble {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #cat-toggle:checked ~ .art-canvas .bubble {
+            animation-duration: 1.5s;
+            fill: var(--gold-light);
+        }
+
+        .hint-text {
+            font-family: 'Cinzel', serif;
+            font-size: 0.72rem;
+            letter-spacing: 2px;
+            color: var(--gold);
+            opacity: 0.85;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+
+        .wishes-box {
+            max-width: 500px;
+            margin: 0 auto;
+            border-top: 1px solid rgba(212, 175, 55, 0.25);
+            padding-top: 25px;
+        }
+
+        .greek-wish {
+            font-size: 1.35rem;
+            color: var(--cream);
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .english-wish {
+            font-size: 1.05rem;
+            color: var(--gold);
+            font-style: italic;
+            letter-spacing: 0.5px;
+        }
+
+        .museum-plaque {
+            margin-top: 35px;
+            display: inline-block;
+            padding: 8px 18px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            font-family: 'Cinzel', serif;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            color: #8c9ba5;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .gallery-frame { padding: 35px 20px; }
+            .art-canvas { width: 230px; height: 230px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="gallery-frame">
+        <div class="date-tag">25 Νοεμβρίου • Saint Catherine's Day</div>
+        
+        <h1>Χρόνια Πολλά, Κατερίνα!</h1>
+        <div class="subtitle-en">Happy Name Day — Celebrating Art, Science & Curiosity</div>
+
+        <input type="checkbox" id="cat-toggle">
+
+        <label for="cat-toggle" class="art-canvas">
+            <div class="meow-bubble">«Νιάου...» ✦</div>
+
+            <svg viewBox="0 0 300 300">
+                <g class="vitruvian-ring">
+                    <circle cx="150" cy="150" r="130" class="thin-line" stroke-dasharray="4 4"/>
+                    <circle cx="150" cy="150" r="115" class="thin-line"/>
+                    <rect x="68" y="68" width="164" height="164" class="thin-line" transform="rotate(45 150 150)"/>
+                </g>
+
+                <polygon points="150,45 240,97 240,202 150,255 60,202 60,97" class="thin-line" stroke-width="1.2"/>
+
+                <path d="M 132 75 L 168 75 M 138 75 L 138 115 L 95 210 C 90 220 97 230 108 230 L 192 230 C 203 230 210 220 205 210 L 162 115 L 162 75" 
+                      class="gold-stroke" stroke-width="2"/>
+
+                <path d="M 106 185 Q 130 175 150 185 T 194 185 L 204 210 C 208 218 202 228 192 228 L 108 228 C 98 228 92 218 96 210 Z" 
+                      fill="rgba(212, 175, 55, 0.15)" stroke="none"/>
+
+                <path class="cat-body" d="M 132 228 
+                         C 130 205, 134 185, 142 172 
+                         L 139 156 L 148 163 
+                         C 152 162, 156 162, 160 163 
+                         L 169 156 L 166 172 
+                         C 173 185, 174 205, 170 228" 
+                      fill="#0e171e" stroke="#d4af37" stroke-width="1.8"/>
+                
+                <path class="cat-body" d="M 170 224 C 188 220, 192 198, 180 192" fill="none" stroke="#d4af37" stroke-width="1.8"/>
+
+                <g class="cat-eyes">
+                    <ellipse cx="148" cy="173" rx="2.5" ry="1.8" fill="#f3e5ab"/>
+                    <ellipse cx="160" cy="173" rx="2.5" ry="1.8" fill="#f3e5ab"/>
+                </g>
+
+                <path d="M 75 140 C 110 120, 190 170, 225 145" class="gold-stroke" stroke-width="1.2" stroke-dasharray="2 3"/>
+                
+                <circle cx="145" cy="145" r="2.5" class="bubble"/>
+                <circle cx="156" cy="135" r="2" class="bubble"/>
+                <circle cx="150" cy="120" r="3" class="bubble"/>
+            </svg>
+        </label>
+
+        <div class="hint-text">✦ Tap the flask ✦</div>
+
+        <div class="wishes-box">
+            <p class="greek-wish">Να χαίρεσαι το όνομά σου! Υγεία, έμπνευση και δημιουργικότητα.</p>
+            <p class="english-wish">Wishing you health, endless inspiration, and a touch of everyday magic.</p>
+        </div>
+
+        <div class="museum-plaque">
+            Collection: Art & Alchemy • 2026
+        </div>
+    </div>
+
+</body>
+</html>
